@@ -1,0 +1,10 @@
+framework module AromaShooterControllerSwift {
+  umbrella header "AromaShooterControllerSwift.h"
+
+  export *
+  module * { export * }
+}
+
+module AromaShooterControllerSwift.Swift {
+    header "AromaShooterControllerSwift-Swift.h"
+}
