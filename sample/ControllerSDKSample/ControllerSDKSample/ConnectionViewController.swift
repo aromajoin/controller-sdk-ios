@@ -6,11 +6,9 @@ import AromaShooterControllerSwift
 
 class ConnectionViewController: UITableViewController{
     
-//    var managedObjectContext: NSManagedObjectContext!
     
     var aromashooterController = AromaShooterController.sharedInstance
     
-//    var aromaShooterCloud = AromaShooterCloud.sharedInstance
     // height of sections
     let SECTION_HEIGHT: CGFloat = 40.0
     
@@ -23,16 +21,11 @@ class ConnectionViewController: UITableViewController{
     
     var selectedDevices: [AromaShooter] = []
     
-//    var userDevices: [ASDevice] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
         aromashooterController.setDelegate(aromaShooterDelegate: self)
         
-        //Load all user devices
-//        loadDeviceFromDatabase()
         
     }
     
@@ -46,8 +39,6 @@ class ConnectionViewController: UITableViewController{
         
         tableView.reloadData()
         
-        //Check whether connected device
-//        checkDevice()
     }
     
     
@@ -69,7 +60,7 @@ class ConnectionViewController: UITableViewController{
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: SECTION_HEIGHT))
         view.backgroundColor = UIColor.clear
         let label = UILabel(frame: CGRect(x: 10,y: (SECTION_HEIGHT - 30)/2,width: 200,height: 30))
-//        label.textColor = Utility.initColorFromHex(hexString: Utility.GRAY_COLOR_HEX)
+
         label.backgroundColor = UIColor.clear
         label.textAlignment = NSTextAlignment.left
         
@@ -92,7 +83,7 @@ class ConnectionViewController: UITableViewController{
             connectButton = UIButton(type: UIButtonType.system)
             connectButton.frame = CGRect(x: tableView.frame.size.width - 150,y: (SECTION_HEIGHT - 30)/2,width: 150,height: 30)
             connectButton.setTitle("CONNECT", for: .normal)
-//            connectButton.tintColor = Utility.initColorFromHex(hexString: Utility.GREEN_COLOR_HEX)
+
             connectButton.addTarget(self, action: #selector(ConnectionViewController.onConnectButtonTouch(sender:)), for: .touchUpInside)
             view.addSubview(connectButton)
             
@@ -131,7 +122,6 @@ class ConnectionViewController: UITableViewController{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "deviceViewCell") as? DeviceTableViewCell else {
             return UITableViewCell()
         }
-        //        print("cell: \(cell)")
         
         var device: AromaShooter?
         switch indexPath.section {
@@ -261,8 +251,6 @@ extension ConnectionViewController: AromaShooterDelegate{
         self.tableView.reloadData()
         connectButton.isEnabled = true
         
-        //Check whether connected device
-//        checkDevice()
     }
     
     func aromaShooter(didDisconnectDevice device: AromaShooter) {
