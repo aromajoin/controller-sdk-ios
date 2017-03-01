@@ -1,6 +1,6 @@
 Change Log
 ===
 
-Version 1.0.0 *(yyyy-mm-dd)*
+Version 1.0.0 *(2017-02-24)*
 ---
 * Initial release
