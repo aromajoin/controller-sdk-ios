@@ -1,21 +1,18 @@
 # Controller SDK for iOS
 
-[//]: # (Add other badges such as version, build bagdges here)
-
-[//]: # (Use Apache License as the default option)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-
-**The iOS version of AromaShooterController SDK which is used to communicate with [Aroma Shooter devices](https://aromajoin.com/hardware/shooters/aroma-shooter-1)**    
+**The iOS version of AromaShooterController SDK which is used to communicate with [Aroma Shooter devices](https://aromajoin.com/hardware/shooters/aroma-shooter-1)**.
 
 # Table of Contents
-1. [Supported devices](https://github.com/aromajoin/controller-sdk-ios#supported-devices)  
-2. [Prerequisites](https://github.com/aromajoin/controller-sdk-ios#prerequisites)
-3. [Installation](https://github.com/aromajoin/controller-sdk-ios#installation)
+1. [Supported devices](#supported-devices)  
+2. [Prerequisites](#prerequisites)
+3. [Installation](#installation)
 4. [Usage](#usage)
-    * [First function](https://github.com/aromajoin/controller-sdk-ios#connect-devices)
-    * [Second function](https://github.com/aromajoin/controller-sdk-ios#diffuse-scents)
-5. [License](https://github.com/aromajoin/controller-sdk-ios#license)
+    * [Connect devices](#connect-devices)
+    * [Get connected devices](#get-connected-devices)
+    * [Diffuse scents](#diffuse-scents)
+5. [License](#license)
 
 ## Supported devices
 * Aroma Shooter Bluetooth version 
@@ -43,33 +40,33 @@ There are 2 options at the moment.
    ```
    * Get the Controller class reference  
    ```swift
-   var aromashooterController = AromaShooterController.sharedInstance
+   var controller = AromaShooterController.sharedInstance
    ```  
-   * Scan AromaShooter devices  
+   * Scan AromaShooter devices
    ```swift
-   aromashooterController.startScanning()
+   controller.startScanning()
    ```  
-   * Make sure that scanning is stopped when the view controller dissapear  
+   * Make sure that scanning is stopped when the view controller dissapear
    ```swift
     override func viewWillDisappear(_ animated: Bool) {
         // Stop searching
-        aromashooterController.stopScanning()
+        controller.stopScanning()
         
     }
    ```  
-   * Connect to a device  
+   * Connect
    ```swift
-   aromashooterController.connect(aromaShooters: devices)
+   controller.connect(aromaShooters: devices)
    ```  
-   * Disconnect to a device  
+   * Disconnect
    ```swift
-   aromashooterController.disconnect(aromaShooter: device)
+   controller.disconnect(aromaShooter: device)
    ```  
-   * Get all current connected devices  
-   ```swift
-   aromashooterController.connectedDevices
-   ```  
-   
+
+### Get connected devices
+```swift
+let connectedDevices = controller.connectedDevices
+```  
 ### Diffuse scents  
 * Import Controller module  
 ```swift
@@ -77,15 +74,15 @@ import AromaShooterControlerSwift
 ```  
 * Get the Controller class reference  
 ```swift
-var aromashooterController = AromaShooterController.sharedInstance
+var controller = AromaShooterController.sharedInstance
 ```  
 * Diffuse scents of all connected devices  
 ```swift
-aromaShooterController.diffuseAll(duration: milliseconds, speed: 1, ports: ports)
+controller.diffuseAll(duration: milliseconds, speed: 1, ports: ports)
 ```  
 * Diffuse scents of specific devices  
 ```swift
-aromaShooterController.diffuse(aromaShooters: devices, duration: milliseconds, speed: 1, ports: ports)
+controller.diffuse(aromaShooters: devices, duration: milliseconds, speed: 1, ports: ports)
 ```  
 
 **For more information, please checkout this repository and refer to the [sample project](https://github.com/aromajoin/controller-sdk-ios/tree/master/sample).**  
