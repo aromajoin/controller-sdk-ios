@@ -26,22 +26,24 @@
 * Download the [framework file at the release page](https://github.com/aromajoin/controller-sdk-ios/releases).  
 * Drag and drop it into your project. (Make sure that it is added in *Embedded Binaries section* in your project's target page).
 
-## Usage  
+## Usage
+
+### Get Controller references
+* Import Controller module
+```swift
+import AromaShooterControlerSwift
+```
+* Get the Controller class reference
+```swift
+var controller = AromaShooterController.sharedInstance
+```
 
 ### Connect devices  
-There are 2 options at the moment.  
+There are 2 options.
 * Use the existing connection screen (ConnectionViewController) inside `sample` app. This is easy and recommended. 
    * Please check out this repository, grab `ConnectionViewController.swift` file to put in your project. 
    * For further detail, please take a look our `sample` applicaton.  
-* Write your own connection screen using our API.  
-   * Import Controller module  
-   ```swift
-   import AromaShooterControlerSwift
-   ```
-   * Get the Controller class reference  
-   ```swift
-   var controller = AromaShooterController.sharedInstance
-   ```  
+* Write your own connection screen using our API.
    * Scan AromaShooter devices
    ```swift
    controller.startScanning()
@@ -51,7 +53,6 @@ There are 2 options at the moment.
     override func viewWillDisappear(_ animated: Bool) {
         // Stop searching
         controller.stopScanning()
-        
     }
    ```  
    * Connect
@@ -67,30 +68,20 @@ There are 2 options at the moment.
 ```swift
 let connectedDevices = controller.connectedDevices
 ```  
-### Diffuse scents  
-* Import Controller module  
-```swift
-import AromaShooterControlerSwift
-```  
-* Get the Controller class reference  
-```swift
-var controller = AromaShooterController.sharedInstance
-```  
+### Diffuse scents
 * Diffuse scents of all connected devices  
 ```swift
-controller.diffuseAll(duration: milliseconds, speed: 1, ports: ports)
+controller.diffuseAll(duration: 3000, booster: true, ports: [1, 2, 3])
 ```  
 * Diffuse scents of specific devices  
 ```swift
-controller.diffuse(aromaShooters: devices, duration: milliseconds, speed: 1, ports: ports)
+controller.diffuse(aromaShooters: devices, duration: 3000, booster: true, port: [1, 2, 3])
 ```  
 
 **For more information, please checkout this repository and refer to the [sample project](https://github.com/aromajoin/controller-sdk-ios/tree/master/sample).**  
 **If you get any issues or require any new features, please create a [new issue](https://github.com/aromajoin/controller-sdk-ios/issues).** 
 
-## License  
-
-The Apache License (Apache)
+## License
 
     Copyright (c) 2017 Aromajoin Corporation
 
