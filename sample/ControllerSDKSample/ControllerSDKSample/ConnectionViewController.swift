@@ -27,8 +27,8 @@ class ConnectionViewController: UITableViewController{
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.aromashooterController.startScanning()
-    self.connectedDevices = aromashooterController.connectedDevices
+    aromashooterController.startScanning()
+    connectedDevices = aromashooterController.connectedDevices
     discoveredDevices.removeAll()
     
     tableView.reloadData()
@@ -192,7 +192,7 @@ extension ConnectionViewController {
         presenter.sourceRect = cell.bounds
       }
       
-      self.present(uiAlertController, animated: true, completion: nil)
+      present(uiAlertController, animated: true, completion: nil)
       return
     case 1:
       cell.accessoryType = UITableViewCellAccessoryType.checkmark
