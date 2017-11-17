@@ -9,7 +9,6 @@
 import UIKit
 
 class DeviceTableViewCell: UITableViewCell {
-    @IBOutlet weak var connectedIndicatorImageView: UIImageView!
-    @IBOutlet weak var deviceNameLabel: UILabel!
-    @IBOutlet weak var hexagonImageView: UIImageView!
+  @IBOutlet weak var deviceNameLabel: UILabel!
+  @IBOutlet weak var hexagonImageView: UIImageView!
 }
