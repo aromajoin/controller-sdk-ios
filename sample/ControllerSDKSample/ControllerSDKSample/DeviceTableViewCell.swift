@@ -1,9 +1,5 @@
 //
-//  DeviceTableViewCell.swift
-//  AromaDriver
-//
-//  Created by Quang Nguyen on 5/4/16.
-//  Copyright © 2016 QuangNguyen. All rights reserved.
+//  Copyright © 2017 Aromajoin. All rights reserved.
 //
 
 import UIKit

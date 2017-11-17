@@ -1,8 +1,4 @@
 //
-//  AppDelegate.swift
-//  ControllerSDKSample
-//
-//  Created by Quang Nguyen on 2/20/17.
 //  Copyright © 2017 Aromajoin. All rights reserved.
 //
 

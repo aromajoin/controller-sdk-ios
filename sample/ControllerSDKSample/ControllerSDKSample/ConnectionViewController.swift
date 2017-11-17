@@ -1,3 +1,6 @@
+//
+//  Copyright © 2017 Aromajoin. All rights reserved.
+//
 
 import Foundation
 import UIKit
