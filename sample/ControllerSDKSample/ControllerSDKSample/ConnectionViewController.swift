@@ -8,50 +8,38 @@ import CoreBluetooth
 import AromaShooterControllerSwift
 
 class ConnectionViewController: UITableViewController{
+  
   var aromashooterController = AromaShooterController.sharedInstance
   
   // height of sections
   let SECTION_HEIGHT: CGFloat = 40.0
   
-  // connect button
-  var connectButton: UIButton!
-  
   var discoveredDevices: [AromaShooter] = []
-  
   var connectedDevices: [AromaShooter] = []
-  
-  var selectedDevices: [AromaShooter] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     aromashooterController.setDelegate(aromaShooterDelegate: self)
     
-    
+    tableView.tableFooterView = UIView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.aromashooterController.startScanning()
-    
     self.connectedDevices = aromashooterController.connectedDevices
     discoveredDevices.removeAll()
-    selectedDevices.removeAll()
     
     tableView.reloadData()
-    
   }
-  
-  
   
   override func viewWillDisappear(_ animated: Bool) {
     // Stop searching
     aromashooterController.stopScanning()
-    
   }
   
   // MARK: - UITableView Datasource
-  
   override func numberOfSections(in tableView: UITableView) -> Int {
     return 2
   }
@@ -61,7 +49,7 @@ class ConnectionViewController: UITableViewController{
     let view = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: SECTION_HEIGHT))
     view.backgroundColor = UIColor.clear
     let label = UILabel(frame: CGRect(x: 10,y: (SECTION_HEIGHT - 30)/2,width: 200,height: 30))
-    
+    label.textColor =  UIColor.darkGray
     label.backgroundColor = UIColor.clear
     label.textAlignment = NSTextAlignment.left
     
@@ -76,18 +64,9 @@ class ConnectionViewController: UITableViewController{
       // Add indicator
       let indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
       indicator.frame = CGRect(x: 90,y: (SECTION_HEIGHT - indicator.frame.size.height)/2, width: indicator.frame.size.width, height: indicator.frame.height)
-      indicator.color = UIColor.white
+      indicator.color = UIColor.darkGray
       indicator.startAnimating()
       view.addSubview(indicator)
-      
-      // Add connectButton
-      connectButton = UIButton(type: UIButtonType.system)
-      connectButton.frame = CGRect(x: tableView.frame.size.width - 150,y: (SECTION_HEIGHT - 30)/2,width: 150,height: 30)
-      connectButton.setTitle("CONNECT", for: .normal)
-      
-      connectButton.addTarget(self, action: #selector(ConnectionViewController.onConnectButtonTouch(sender:)), for: .touchUpInside)
-      view.addSubview(connectButton)
-      
       break
     default:
       return view
@@ -95,7 +74,6 @@ class ConnectionViewController: UITableViewController{
     
     return view
   }
-  
   
   // number of rows in sections
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -119,7 +97,6 @@ class ConnectionViewController: UITableViewController{
   
   // Contents for each cell
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
     guard let cell = tableView.dequeueReusableCell(withIdentifier: "deviceViewCell") as? DeviceTableViewCell else {
       return UITableViewCell()
     }
@@ -145,84 +122,17 @@ class ConnectionViewController: UITableViewController{
       if device.getName() != nil {
         cell.deviceNameLabel.text = device.getName()
       }else {
-        cell.deviceNameLabel.text = "UnknownDevice"
+        cell.deviceNameLabel.text = "Unknown Device"
       }
     }
     
     return cell
   }
-  
-  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cell = tableView.cellForRow(at: indexPath) as! DeviceTableViewCell
-    let deviceName = cell.deviceNameLabel.text
-    
-    switch indexPath.section {
-    case 0:
-      
-      let uiAlertController = UIAlertController(title: deviceName, message: nil, preferredStyle: .actionSheet)
-      uiAlertController.addAction(UIAlertAction(title: "DISCONNECT", style: UIAlertActionStyle.destructive, handler: { _ in
-        self.aromashooterController.disconnect(aromaShooter: self.connectedDevices[indexPath.row])
-      }))
-      uiAlertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { _ in
-      }))
-      
-      
-      if let presenter = uiAlertController.popoverPresentationController {
-        presenter.sourceView = cell
-        presenter.sourceRect = cell.bounds
-      }
-      
-      self.present(uiAlertController, animated: true, completion: nil)
-      
-      return
-    case 1:
-      
-      cell.accessoryType = UITableViewCellAccessoryType.checkmark
-      
-      selectedDevices.append(discoveredDevices[indexPath.row])
-      return
-    default:
-      return
-    }
-  }
-  
-  // callback method for deselected row
-  override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    if(indexPath.section != 1){
-      return
-    }
-    let cell = tableView.cellForRow(at: indexPath)
-    cell?.accessoryType = UITableViewCellAccessoryType.none
-    
-    for i in 0 ..< selectedDevices.count {
-      if selectedDevices[i].getPeripheral().identifier.uuidString == discoveredDevices[indexPath.row].getPeripheral().identifier.uuidString{
-        selectedDevices.remove(at: i)
-        break
-      }
-    }
-    
-  }
-  
-  
-  // UIButton Callback
-  func onConnectButtonTouch(sender: UIButton) {
-    //         aromashooterController.searchAromashooter()
-    
-    if(selectedDevices.count == 0){
-      return
-    }
-    aromashooterController.connect(aromaShooters: selectedDevices)
-    //After the selected devices are all connected, remove them from the selected list
-    selectedDevices.removeAll()
-    connectButton.isEnabled = false
-  }
 }
-
 
 // MARK: - AromashooterController Delegate
 extension ConnectionViewController: AromaShooterDelegate{
   func aromaShooter(didDiscoverDevice device: AromaShooter) {
-    //        print("discover: \(device.getName())")
     for e in discoveredDevices {
       if e.getPeripheral().identifier.uuidString == device.getPeripheral().identifier.uuidString {
         return
@@ -235,10 +145,8 @@ extension ConnectionViewController: AromaShooterDelegate{
     }
     
     discoveredDevices.append(device)
-    //        print("Discovered count: \(discoveredDevices.count)")
     self.tableView.reloadData()
   }
-  
   
   func aromaShooter(didConnectDevice device: AromaShooter) {
     connectedDevices.append(device)
@@ -250,8 +158,6 @@ extension ConnectionViewController: AromaShooterDelegate{
     }
     
     self.tableView.reloadData()
-    connectButton.isEnabled = true
-    
   }
   
   func aromaShooter(didDisconnectDevice device: AromaShooter) {
@@ -262,8 +168,38 @@ extension ConnectionViewController: AromaShooterDelegate{
       }
     }
     self.tableView.reloadData()
-    
     aromashooterController.startScanning()
   }
 }
 
+// MARK: - UITableViewDelegate
+extension ConnectionViewController {
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let cell = tableView.cellForRow(at: indexPath) as! DeviceTableViewCell
+    let deviceName = cell.deviceNameLabel.text
+    
+    switch indexPath.section {
+    case 0:
+      let uiAlertController = UIAlertController(title: deviceName, message: nil, preferredStyle: .actionSheet)
+      uiAlertController.addAction(UIAlertAction(title: "Disconnect", style: UIAlertActionStyle.destructive, handler: { _ in
+        self.aromashooterController.disconnect(aromaShooter: self.connectedDevices[indexPath.row])
+      }))
+      uiAlertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { _ in
+      }))
+      
+      if let presenter = uiAlertController.popoverPresentationController {
+        presenter.sourceView = cell
+        presenter.sourceRect = cell.bounds
+      }
+      
+      self.present(uiAlertController, animated: true, completion: nil)
+      return
+    case 1:
+      cell.accessoryType = UITableViewCellAccessoryType.checkmark
+      aromashooterController.connect(aromaShooters: [discoveredDevices[indexPath.row]])
+      return
+    default:
+      return
+    }
+  }
+}
