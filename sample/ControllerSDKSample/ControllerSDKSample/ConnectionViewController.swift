@@ -62,7 +62,7 @@ class ConnectionViewController: UITableViewController{
     case 1:
       label.text = "Available"
       // Add indicator
-      let indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+      let indicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
       indicator.frame = CGRect(x: 90,y: (SECTION_HEIGHT - indicator.frame.size.height)/2, width: indicator.frame.size.width, height: indicator.frame.height)
       indicator.color = UIColor.darkGray
       indicator.startAnimating()
@@ -106,13 +106,13 @@ class ConnectionViewController: UITableViewController{
     case 0:
       if connectedDevices.count > 0 {
         device = connectedDevices[indexPath.row]
-        cell.accessoryType = UITableViewCellAccessoryType.checkmark
+        cell.accessoryType = UITableViewCell.AccessoryType.checkmark
       }
       break
     case 1:
       if discoveredDevices.count > 0 {
         device = discoveredDevices[indexPath.row]
-        cell.accessoryType = UITableViewCellAccessoryType.none
+        cell.accessoryType = UITableViewCell.AccessoryType.none
       }
       break
     default:
@@ -181,10 +181,10 @@ extension ConnectionViewController {
     switch indexPath.section {
     case 0:
       let uiAlertController = UIAlertController(title: deviceName, message: nil, preferredStyle: .actionSheet)
-      uiAlertController.addAction(UIAlertAction(title: "Disconnect", style: UIAlertActionStyle.destructive, handler: { _ in
+      uiAlertController.addAction(UIAlertAction(title: "Disconnect", style: UIAlertAction.Style.destructive, handler: { _ in
         self.aromashooterController.disconnect(aromaShooter: self.connectedDevices[indexPath.row])
       }))
-      uiAlertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { _ in
+      uiAlertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { _ in
       }))
       
       if let presenter = uiAlertController.popoverPresentationController {
@@ -195,7 +195,7 @@ extension ConnectionViewController {
       present(uiAlertController, animated: true, completion: nil)
       return
     case 1:
-      cell.accessoryType = UITableViewCellAccessoryType.checkmark
+      cell.accessoryType = UITableViewCell.AccessoryType.checkmark
       aromashooterController.connect(aromaShooters: [discoveredDevices[indexPath.row]])
       return
     default:
